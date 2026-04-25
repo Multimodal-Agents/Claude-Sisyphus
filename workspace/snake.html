@@ -42,6 +42,9 @@
     font-weight: 700;
     font-size: 1rem;
   }
+  #hud .val.level-val {
+    color: #b388ff;
+  }
   #hud .new-hs {
     color: #ffd700;
     font-size: 0.75rem;
@@ -174,6 +177,7 @@
 <div id="title">SNAKE</div>
 <div id="hud">
   <span>Score <span class="val" id="score">0</span></span>
+  <span>Level <span class="val level-val" id="level">1</span></span>
   <span>Best &nbsp;<span class="val" id="high-score">0</span><span class="new-hs" id="live-hs-badge" style="display:none"> ★ NEW</span></span>
 </div>
 
@@ -190,6 +194,10 @@
       <div class="score-row">
         <span class="score-label">Score</span>
         <span class="score-val" id="final-score">0</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Level</span>
+        <span class="score-val" style="color:#b388ff" id="final-level">1</span>
       </div>
       <div class="score-row">
         <span class="score-label">Best</span>
@@ -209,12 +217,12 @@
   const CELL   = 21;
   const COLS   = Math.floor(canvas.width  / CELL);
   const ROWS   = Math.floor(canvas.height / CELL);
-  const BASE_INTERVAL = 130;
-  const MIN_INTERVAL  = 60;
+  const MAX_LEVEL = 10;
+  const FOOD_PER_LEVEL = 5;
 
   let snake, dir, nextDir, food, score, highScore, running;
+  let level, foodEaten, levelFlashAt;
   let loopId = null;
-  let foodAnim = 0;   // for pulsing food
   let lastTime = 0;
   let accumulator = 0;
 
@@ -230,7 +238,10 @@
     snake   = [{ x: cx, y: cy }, { x: cx - 1, y: cy }, { x: cx - 2, y: cy }];
     dir     = { x: 1, y: 0 };
     nextDir = { x: 1, y: 0 };
-    score   = 0;
+    score      = 0;
+    level      = 1;
+    foodEaten  = 0;
+    levelFlashAt = null;
     updateHUD(false);
     placeFood();
     running = true;
@@ -245,8 +256,8 @@
   }
 
   function stepInterval() {
-    // Speed ramps from BASE_INTERVAL down to MIN_INTERVAL as score grows
-    return Math.max(MIN_INTERVAL, BASE_INTERVAL - Math.floor(score / 50) * 5);
+    // Level 1 = 130ms, each level subtracts ~8ms, level 10 = ~58ms
+    return Math.max(58, 130 - (level - 1) * 8);
   }
 
   // ── Game step ─────────────────────────────────────────────────────────────
@@ -261,6 +272,12 @@
 
     if (head.x === food.x && head.y === food.y) {
       score += 10;
+      foodEaten++;
+      if (level < MAX_LEVEL && foodEaten % FOOD_PER_LEVEL === 0) {
+        level++;
+        levelFlashAt = lastTime;
+        accumulator = 0; // reset so new interval applies cleanly
+      }
       updateHUD(score > highScore);
       if (score > highScore) {
         highScore = score;
@@ -341,11 +358,37 @@
     ctx.arc(fx, fy, r, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
+
+    // Level-up flash: large centered text that fades over 1.2s
+    if (levelFlashAt !== null) {
+      const elapsed = ts - levelFlashAt;
+      const duration = 1200;
+      if (elapsed < duration) {
+        const progress = elapsed / duration;
+        const alpha = 1 - progress;
+        const scale = 1 + progress * 0.4;
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.scale(scale, scale);
+        ctx.font = `900 64px 'Segoe UI', system-ui, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(179,136,255,0.8)';
+        ctx.shadowBlur = 30;
+        ctx.fillStyle = '#b388ff';
+        ctx.fillText(`LEVEL ${level}`, 0, 0);
+        ctx.restore();
+      } else {
+        levelFlashAt = null;
+      }
+    }
   }
 
   // ── HUD update ────────────────────────────────────────────────────────────
   function updateHUD(isNewHS) {
     document.getElementById('score').textContent = score;
+    document.getElementById('level').textContent = level;
     document.getElementById('high-score').textContent = Math.max(highScore, score);
     const badge = document.getElementById('live-hs-badge');
     badge.style.display = isNewHS ? 'inline' : 'none';
@@ -367,6 +410,7 @@
     document.getElementById('overlay-desc').textContent  = '';
 
     document.getElementById('final-score').textContent = score;
+    document.getElementById('final-level').textContent = level;
     document.getElementById('final-high').textContent  = highScore;
     document.getElementById('overlay-scores').style.display = 'flex';
     document.getElementById('new-hs-badge').style.display = isNewHS ? 'block' : 'none';
