@@ -1,0 +1,18 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Process task queue",
+			"type": "shell",
+			"command": "echo \"Processing task queue\""
+		},
+		{
+			"label": "Process task queue",
+			"type": "shell",
+			"command": "echo \"Processing task queue\"",
+			"args": [
+				"echo \"Processing task queue\""
+			]
+		}
+	]
+}
