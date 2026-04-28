@@ -145,11 +145,11 @@ del .git\hooks\pre-push
 
 ```
 tasks/001_build_homepage.md      ← Claude reads this
-        ↓  does the work
+        →  does the work
 workspace/index.html             ← output saved here
-        ↓  git commit
+        →  git commit
 tasks/done/001_build_homepage.md ← task archived
-        ↓  moves to next task
+        →  moves to next task
 tasks/002_add_dark_mode.md       ← repeat
 ```
 
