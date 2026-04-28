@@ -1,9 +1,9 @@
 <div align="center">
-  <img src="assets/logo.png" alt="Claude-Sisyphus" width="180"/>
+  <img src="assets/logo.png" alt="Claude-Sisyphus" width="160"/>
 
   # Claude-Sisyphus
 
-  **An autonomous task queue runner for Claude Code.**
+  **An autonomous task queue runner for Claude Code.**<br/>
   Write tasks. Run one command. Walk away.
 
 </div>
