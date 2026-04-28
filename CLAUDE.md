@@ -14,7 +14,6 @@
 
 ## Rules
 - Never edit files in `tasks/` (except to move them to done/)
-- Never edit `.github/agents/` files
 - Save all generated files to `workspace/`
 - If a task is impossible or broken, move it to `tasks/failed/` with a note appended to the file
 - Do not ask for confirmation — just do the work

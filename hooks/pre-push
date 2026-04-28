@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+echo "============================================"
+echo "  PUSH BLOCKED: Sisyphus is running."
+echo "  The boulder stays local."
+echo "  Delete .git/hooks/pre-push to push manually."
+echo "============================================"
+exit 1
