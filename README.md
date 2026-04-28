@@ -4,7 +4,9 @@ An autonomous task queue runner for Claude Code. Write task files, run one comma
 
 In Greek mythology, Sisyphus was condemned to roll a boulder up a hill forever — only for it to roll back down each time. This is that, but the boulder actually stays at the top.
 
-Drop in as many tasks as you want. Claude will keep going — reading, building, committing, moving on — for as long as there's work to do. Claude Code's context compaction means it can summarize earlier parts of the session to free up space as it goes, so even a long queue won't stop it. In theory, there's no limit. In practice, keep task files focused and specific and it'll run as far as you push it.
+Drop in as many tasks as you want. Claude will keep going — reading, building, committing, moving on — for as long as there's work to do. The queue state lives in the filesystem, not the conversation, so even if the context gets compacted Claude just looks at `tasks/`, sees what isn't in `done/` yet, and picks up exactly where it left off. It will never lose its place.
+
+The only things that stop it: the queue runs dry, or you run out of credits.
 
 ![Sisyphus demo — bypass permissions enabled and /loop command running](assets/sisyphus-demo.png)
 
