@@ -144,13 +144,13 @@ del .git\hooks\pre-push
 ## How Tasks Move Through the Queue
 
 ```
-tasks/001_build_homepage.md   <- Claude reads this
-        |  does the work
-workspace/index.html          <- output saved here
-        |  git commit
-tasks/done/001_build_homepage.md  <- task archived
-        |  moves to next task
-tasks/002_add_dark_mode.md    <- repeat
+tasks/001_build_homepage.md      ← Claude reads this
+        ↓  does the work
+workspace/index.html             ← output saved here
+        ↓  git commit
+tasks/done/001_build_homepage.md ← task archived
+        ↓  moves to next task
+tasks/002_add_dark_mode.md       ← repeat
 ```
 
 If a task is impossible or broken, Claude moves it to `tasks/failed/` with a note explaining why.
