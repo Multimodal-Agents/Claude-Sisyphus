@@ -24,7 +24,7 @@ cd Claude-Sisyphus
 
 ### 2. Write your tasks
 
-Tasks are plain markdown files in the `tasks/` folder. Name them with a number prefix — Claude processes them in order, lowest number first.
+Tasks are plain markdown files in the `tasks/` folder. Name them with a number prefix — Claude processes them in alphabetical order, lowest number first.
 
 ```
 tasks/
@@ -48,7 +48,7 @@ Requirements:
 - Clean, modern design with a warm color palette
 ```
 
-All generated files get saved to `workspace/` automatically.
+All generated files are saved to `workspace/` automatically.
 
 ### 3. Open Claude Code in your project folder
 
@@ -82,38 +82,48 @@ Claude will read tasks one at a time, do the work, commit, move the task to `tas
 
 By default the hook is **off**. We recommend installing it before running Sisyphus so there's a hard guarantee nothing reaches your remote while the agent is working.
 
-### Enable the hook
+### Using the scripts (recommended)
 
-**Mac / Linux:**
-```bash
-cp hooks/pre-push .git/hooks/pre-push
-chmod +x .git/hooks/pre-push
-```
-
-**Windows (PowerShell or Command Prompt):**
-```powershell
-copy hooks\pre-push .git\hooks\pre-push
-```
-> No `chmod` needed on Windows — git hooks don't require file permissions here.
-
-**Windows (Git Bash):**
-```bash
-cp hooks/pre-push .git/hooks/pre-push
-```
-
-Once installed, any `git push` will be blocked with a message until you remove the hook.
-
-### Disable the hook
+The scripts handle everything for you and tell you the current status if you're not sure.
 
 **Mac / Linux / Git Bash:**
 ```bash
+bash scripts/hook.sh on    # enable — blocks all pushes
+bash scripts/hook.sh off   # disable — pushes work normally
+bash scripts/hook.sh       # check current status
+```
+
+**Windows (Command Prompt or PowerShell):**
+```powershell
+scripts\hook.bat on    # enable — blocks all pushes
+scripts\hook.bat off   # disable — pushes work normally
+scripts\hook.bat       # check current status
+```
+
+### Manual install (if you prefer not to use the scripts)
+
+**Mac / Linux / Git Bash:**
+```bash
+# Enable
+cp hooks/pre-push .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+
+# Disable
 rm .git/hooks/pre-push
 ```
 
-**Windows (PowerShell or Command Prompt):**
+**Windows (Command Prompt or PowerShell):**
 ```powershell
+# Enable
+copy hooks\pre-push .git\hooks\pre-push
+
+# Disable
 del .git\hooks\pre-push
 ```
+
+> **Note for Windows users:** You do not need `chmod` — Windows does not use file permissions for git hooks.
+
+> **How it works:** Git looks for hook scripts in `.git/hooks/`. That folder is local to your machine and never pushed to GitHub, which is why the hook is off by default — cloning the repo gives you the script in `hooks/`, but doesn't activate it until you install it.
 
 ---
 
@@ -121,11 +131,11 @@ del .git\hooks\pre-push
 
 ```
 tasks/001_build_homepage.md   ← Claude reads this
-        ↓ does the work
+        ↓  does the work
 workspace/index.html          ← output saved here
-        ↓ git commit
+        ↓  git commit
 tasks/done/001_build_homepage.md  ← task archived
-        ↓ moves to next task
+        ↓  moves to next task
 tasks/002_add_dark_mode.md    ← repeat
 ```
 
@@ -138,7 +148,10 @@ If a task is impossible or broken, Claude moves it to `tasks/failed/` with a not
 ```
 .
 ├── hooks/
-│   └── pre-push          # copy to .git/hooks/ to block all pushes
+│   └── pre-push          # the hook script — installed by scripts/hook.sh or hook.bat
+├── scripts/
+│   ├── hook.sh           # manage the hook on Mac / Linux / Git Bash
+│   └── hook.bat          # manage the hook on Windows
 ├── tasks/
 │   ├── 001_your_task.md  # add your tasks here
 │   ├── done/             # completed tasks are moved here automatically
@@ -153,7 +166,8 @@ If a task is impossible or broken, Claude moves it to `tasks/failed/` with a not
 
 ## Tips
 
-- **Number your tasks** with zero-padded prefixes (`001_`, `002_`) so the order is predictable.
-- **Be specific in task files** — vague prompts lead to vague output. Include file paths, requirements, and constraints.
+- **Number your tasks** with zero-padded prefixes (`001_`, `002_`) so the order is always predictable.
+- **Be specific in task files** — vague prompts lead to vague output. Include file paths, requirements, and any constraints.
 - **Check `tasks/failed/`** if Claude gets stuck — the file will have a note about what went wrong.
 - **Don't edit `CLAUDE.md`** — it contains the rules the agent follows to keep commits clean and pushes blocked.
+- **The hook is per-clone** — if you clone the repo on a new machine, you'll need to run the install script again.
