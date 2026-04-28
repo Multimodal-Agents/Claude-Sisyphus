@@ -1,6 +1,5 @@
 <div align="center">
-  <img src="assets/logo.png" alt="Claude-Sisyphus" width="160"/>
-
+  <img src="assets/logo.png" alt="Claude-Sisyphus" width="184"/>
   # Claude-Sisyphus
 
   **An autonomous task queue runner for Claude Code.**<br/>
