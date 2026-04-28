@@ -1,10 +1,18 @@
-# Claude-Sisyphus
+<div align="center">
+  <img src="assets/logo.png" alt="Claude-Sisyphus" width="180"/>
 
-An autonomous task queue runner for Claude Code. Write task files, run one command, and Claude works through them one by one — committing after each, never pushing, until the queue is empty.
+  # Claude-Sisyphus
 
-In Greek mythology, Sisyphus was condemned to roll a boulder up a hill forever — only for it to roll back down each time. This is that, but the boulder actually stays at the top.
+  **An autonomous task queue runner for Claude Code.**
+  Write tasks. Run one command. Walk away.
 
-Drop in as many tasks as you want. Claude will keep going — reading, building, committing, moving on — for as long as there's work to do. The queue state lives in the filesystem, not the conversation, so even if the context gets compacted Claude just looks at `tasks/`, sees what isn't in `done/` yet, and picks up exactly where it left off. It will never lose its place.
+</div>
+
+---
+
+In [Greek mythology](https://en.wikipedia.org/wiki/Sisyphus), Sisyphus was condemned to roll a boulder up a hill for eternity — only for it to roll back down each time. This is that, but the boulder actually stays at the top.
+
+Load up a queue of tasks and Claude will work through them relentlessly — reading, building, committing, moving on — one by one, for as long as there's work to do. It never loses its place. The queue state lives in the filesystem, not the conversation, so even after context compaction Claude just looks at `tasks/`, sees what isn't in `done/` yet, and picks up exactly where it left off.
 
 The only things that stop it: the queue runs dry, or you run out of credits.
 
@@ -177,3 +185,14 @@ If a task is impossible or broken, Claude moves it to `tasks/failed/` with a not
 - **Check `tasks/failed/`** if Claude gets stuck — the file will have a note about what went wrong.
 - **Don't edit `CLAUDE.md`** — it contains the rules the agent follows to keep commits clean and pushes blocked.
 - **The hook is per-clone** — if you clone the repo on a new machine, you'll need to run the install script again.
+
+---
+
+## Roadmap
+
+- **Failed task retry** — a `tasks/retry/` folder and attempt counter in the filename (`001_build_thing.attempt2.md`) so Claude can try again with context from the previous failure
+- **Task dependencies** — a `depends_on: 003` header in task files so Claude can skip blocked tasks instead of failing
+- **Task output manifest** — after each task, append a one-line summary to `workspace/MANIFEST.md` for a clean audit trail without spelunking commits
+- **Task templates** — a `tasks/templates/` folder with common patterns (refactor, research, bugfix) so you can queue new work fast
+- **Utility scripts** — helper scripts for common operations like bulk-creating task files, archiving the workspace, and resetting the queue
+- **Local sub-agent support** — scripts for spinning up and routing tasks to local model servers (llama.cpp, vLLM) as drop-in Claude alternatives
