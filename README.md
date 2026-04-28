@@ -78,9 +78,9 @@ Claude will read tasks one at a time, do the work, commit, move the task to `tas
 
 ## Push Protection Hook
 
-By default, the hook is **off** — Claude only commits locally and never pushes, but you can still push manually yourself whenever you want.
+`CLAUDE.md` tells Claude not to push — but that's just an instruction. The hook is what **actually enforces it** at the git level, making it physically impossible for any push to succeed, whether it comes from Claude or from you manually.
 
-If you want to **block all pushes** (including your own) while Sisyphus is running, you can install the hook. This is useful if you're running Sisyphus unattended and want to be sure nothing reaches your remote.
+By default the hook is **off**. We recommend installing it before running Sisyphus so there's a hard guarantee nothing reaches your remote while the agent is working.
 
 ### Enable the hook
 
