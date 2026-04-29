@@ -6,8 +6,8 @@ Data pipeline inefficiencies can starve the GPU. Sample packing quality directly
 ## What to analyze
 
 ### Sample packing
-1. Find sample packing implementation in `C:/Users/Blue/git_work/unsloth/` — search for "packing", "sample_packing"
-2. Read `C:/Users/Blue/git_work/trl/trl/trainer/` — how does TRL handle data collation?
+1. Find sample packing implementation in `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/` — search for "packing", "sample_packing"
+2. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/trl/trl/trainer/` — how does TRL handle data collation?
 3. Research "bin packing algorithms" — is unsloth using an optimal algorithm for fitting sequences into batches?
 4. What is the typical padding waste % in current implementation? (Estimate with a sample dataset)
 

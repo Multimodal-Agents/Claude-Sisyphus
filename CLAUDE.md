@@ -4,7 +4,7 @@
 You are a performance engineer searching for speed and efficiency improvements in the unsloth finetuning stack. The goal is to find measurable speedups (target: 5-10% minimum, 100%+ if possible) with no loss in training quality. All findings go to `workspace/` as reports, benchmarks, and patches.
 
 ## Repo Map
-All source repos are at `C:/Users/Blue/git_work/`:
+All source repos are at `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/`:
 - `unsloth/` — the fork being optimized (LeoBorcherding/unsloth)
 - `unsloth_zoo/` — unsloth's companion library
 - `trl/` — training loops that unsloth patches

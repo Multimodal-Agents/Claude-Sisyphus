@@ -4,10 +4,10 @@
 FP8 training can give 2x+ throughput on H100s with no quality loss when done correctly. Assess and improve unsloth's FP8 implementation.
 
 ## What to analyze
-1. Read `C:/Users/Blue/git_work/unsloth/unsloth/kernels/fp8.py` thoroughly
-2. Read `C:/Users/Blue/git_work/torchao/` — how does TorchAO handle FP8?
+1. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/kernels/fp8.py` thoroughly
+2. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/torchao/` — how does TorchAO handle FP8?
 3. Check Transformer Engine (NVIDIA's FP8 library) approach — what does unsloth not implement from TE?
-4. Check `C:/Users/Blue/git_work/unsloth_zoo/` for additional FP8 utilities
+4. Check `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth_zoo/` for additional FP8 utilities
 
 ## Key questions
 - Does the current FP8 implementation support both E4M3 and E5M2 formats where appropriate?

@@ -4,10 +4,10 @@
 Find improvements to how unsloth handles attention computation — currently the most compute-intensive part of any transformer.
 
 ## What to analyze
-1. Find where attention is implemented in `C:/Users/Blue/git_work/unsloth/unsloth/models/llama.py` — search for `scaled_dot_product_attention`, `flash_attn`, attention mask handling
-2. Read `C:/Users/Blue/git_work/flash-attention/` — what does FA3 do that unsloth isn't using?
-3. Check `C:/Users/Blue/git_work/xformers/xformers/ops/fmha/` — any ops unsloth could use?
-4. Check `C:/Users/Blue/git_work/unsloth/unsloth/kernels/flex_attention.py` — is flex attention being used optimally?
+1. Find where attention is implemented in `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/models/llama.py` — search for `scaled_dot_product_attention`, `flash_attn`, attention mask handling
+2. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/flash-attention/` — what does FA3 do that unsloth isn't using?
+3. Check `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/xformers/xformers/ops/fmha/` — any ops unsloth could use?
+4. Check `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/kernels/flex_attention.py` — is flex attention being used optimally?
 
 ## Specific opportunities to investigate
 - **GQA optimization**: For models with Grouped Query Attention (Llama 3, Qwen), is KV cache handled optimally?

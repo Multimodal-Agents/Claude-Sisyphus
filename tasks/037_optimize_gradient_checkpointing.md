@@ -4,8 +4,8 @@
 Gradient checkpointing trades compute for memory. Smarter checkpoint placement can reduce memory with less compute overhead.
 
 ## What to analyze
-1. Read `C:/Users/Blue/git_work/unsloth_zoo/` — find the gradient checkpointing implementation
-2. Read `C:/Users/Blue/git_work/unsloth/unsloth/models/llama.py` — find where checkpointing is applied
+1. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth_zoo/` — find the gradient checkpointing implementation
+2. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/models/llama.py` — find where checkpointing is applied
 3. Research "selective activation recomputation" — the technique of only checkpointing the expensive parts
 4. Research "activation offloading" — can activations be moved to CPU during forward pass?
 

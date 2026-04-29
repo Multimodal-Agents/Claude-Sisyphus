@@ -4,8 +4,8 @@
 Unsloth wraps and patches TRL's SFTTrainer. Find inefficiencies in how this patching works and in the trainer loop itself.
 
 ## What to analyze
-1. Read `C:/Users/Blue/git_work/unsloth/unsloth/trainer.py` fully
-2. Read `C:/Users/Blue/git_work/trl/trl/trainer/sft_trainer.py` — understand what unsloth overrides
+1. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/trainer.py` fully
+2. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/trl/trl/trainer/sft_trainer.py` — understand what unsloth overrides
 3. Find every `.to(device)`, `.contiguous()`, and tensor copy in the training loop
 4. Check: is gradient accumulation implemented correctly for all cases?
 5. Check: are there any Python-level loops that could be vectorized?

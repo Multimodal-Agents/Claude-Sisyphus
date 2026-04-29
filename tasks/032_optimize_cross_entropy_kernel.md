@@ -1,7 +1,7 @@
 # Task: Optimize the Cross-Entropy Loss Kernel
 
 ## Goal
-Improve `C:/Users/Blue/git_work/unsloth/unsloth/kernels/cross_entropy_loss.py`.
+Improve `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/kernels/cross_entropy_loss.py`.
 
 ## Background
 Cross-entropy loss is computed over the entire vocabulary (often 128K+ tokens for modern models) at every training step. The current fused implementation is good but there may be room to improve further, especially for large vocabularies.
@@ -9,7 +9,7 @@ Cross-entropy loss is computed over the entire vocabulary (often 128K+ tokens fo
 ## What to do
 1. Read the current implementation — understand the chunking strategy
 2. Research "chunked cross entropy" and "liger kernel" cross entropy approaches
-3. Check `C:/Users/Blue/git_work/trl/` for how it computes loss — is there overlap?
+3. Check `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/trl/` for how it computes loss — is there overlap?
 4. Check if there's an opportunity to overlap the loss computation with the backward pass
 5. Investigate whether the vocabulary parallel approach from Megatron-LM is applicable
 6. Implement improvements in `workspace/kernels/cross_entropy_v2.py`

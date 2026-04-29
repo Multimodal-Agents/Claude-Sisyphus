@@ -3,7 +3,7 @@
 ## Goal
 Find every optimization opportunity in unsloth's custom triton kernels. These are the core of unsloth's speed advantage — improving them is the highest-leverage work.
 
-## Kernels to analyze (in `C:/Users/Blue/git_work/unsloth/unsloth/kernels/`)
+## Kernels to analyze (in `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/kernels/`)
 For each kernel file, analyze:
 1. `fast_lora.py` — LoRA forward and backward passes
 2. `layernorm.py` — LayerNorm forward/backward
@@ -23,9 +23,9 @@ For each kernel file, analyze:
 - Missing features: does the kernel support all precisions (bf16, fp16, fp8)?
 
 ## Also check
-- Compare unsloth's RoPE kernel against `C:/Users/Blue/git_work/flash-attention/` implementation
-- Compare unsloth's LayerNorm against `C:/Users/Blue/git_work/xformers/` implementation
-- Look at `C:/Users/Blue/git_work/triton/python/tutorials/` for techniques unsloth isn't using
+- Compare unsloth's RoPE kernel against `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/flash-attention/` implementation
+- Compare unsloth's LayerNorm against `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/xformers/` implementation
+- Look at `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/triton/python/tutorials/` for techniques unsloth isn't using
 
 ## Output
 Save to `workspace/011_kernel_analysis.md`:

@@ -19,10 +19,10 @@ All repos are at `C:/Users/Blue/git_work/`:
 - `torchao/` — PyTorch quantization library
 
 ## What to do
-1. Read `C:/Users/Blue/git_work/unsloth/unsloth/kernels/` — every file, understand what each kernel does
-2. Read `C:/Users/Blue/git_work/unsloth/unsloth/models/llama.py` — understand how unsloth patches transformers
-3. Read `C:/Users/Blue/git_work/unsloth/unsloth/trainer.py` — understand the training loop modifications
-4. Read `C:/Users/Blue/git_work/unsloth/unsloth/import_fixes.py` — understand what bugs unsloth is working around
+1. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/kernels/` — every file, understand what each kernel does
+2. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/models/llama.py` — understand how unsloth patches transformers
+3. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/trainer.py` — understand the training loop modifications
+4. Read `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/import_fixes.py` — understand what bugs unsloth is working around
 5. For each of the 12 dependency repos, read the README and key source files
 6. Map every point where unsloth touches an external library
 7. Identify the top 25 specific code locations with the highest optimization potential, ranked by estimated impact

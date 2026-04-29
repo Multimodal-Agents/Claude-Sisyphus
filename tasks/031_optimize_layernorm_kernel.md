@@ -1,7 +1,7 @@
 # Task: Optimize the LayerNorm and RMSNorm Triton Kernels
 
 ## Goal
-Improve `C:/Users/Blue/git_work/unsloth/unsloth/kernels/layernorm.py` and `rms_layernorm.py`.
+Improve `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/kernels/layernorm.py` and `rms_layernorm.py`.
 
 ## Background
 RMSNorm is called at every transformer layer. Llama-family models use it exclusively. Faster RMSNorm = faster everything.
@@ -9,7 +9,7 @@ RMSNorm is called at every transformer layer. Llama-family models use it exclusi
 ## What to do
 1. Read both kernel files carefully
 2. Compare against Apex's fused LayerNorm and triton's own LayerNorm tutorial
-3. Check the `C:/Users/Blue/git_work/xformers/` LayerNorm implementation for ideas
+3. Check the `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/xformers/` LayerNorm implementation for ideas
 4. Implement improvements in `workspace/kernels/rms_layernorm_v2.py`
 5. Pay special attention to:
    - The backward pass — is it computing more than necessary?

@@ -18,7 +18,7 @@
 - What is the compilation time overhead and warmup cost?
 
 ## Also check
-- `C:/Users/Blue/git_work/torchao/` — does TorchAO's `quantize_` + `torch.compile` path beat current approach?
+- `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/torchao/` — does TorchAO's `quantize_` + `torch.compile` path beat current approach?
 
 ## Output
 - `workspace/041_torch_compile_analysis.md` — benchmark results and recommendations

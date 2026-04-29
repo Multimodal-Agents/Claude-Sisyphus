@@ -6,10 +6,10 @@ Identify every unnecessary memory allocation, copy, and peak usage spike in the 
 ## What to analyze
 
 ### In unsloth source
-- `C:/Users/Blue/git_work/unsloth/unsloth/models/llama.py` — attention implementation memory patterns
-- `C:/Users/Blue/git_work/unsloth/unsloth/kernels/fast_lora.py` — LoRA intermediate tensor allocations
-- `C:/Users/Blue/git_work/unsloth/unsloth/trainer.py` — gradient accumulation memory behavior
-- `C:/Users/Blue/git_work/unsloth_zoo/` — gradient checkpointing implementation
+- `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/models/llama.py` — attention implementation memory patterns
+- `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/kernels/fast_lora.py` — LoRA intermediate tensor allocations
+- `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth/unsloth/trainer.py` — gradient accumulation memory behavior
+- `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/unsloth_zoo/` — gradient checkpointing implementation
 
 ### Specific questions to answer
 1. Does unsloth's gradient checkpointing implementation recompute the optimal set of activations?
@@ -22,7 +22,7 @@ Identify every unnecessary memory allocation, copy, and peak usage spike in the 
 
 ### Compare against
 - How DeepSpeed ZeRO handles optimizer state partitioning
-- How `C:/Users/Blue/git_work/accelerate/` implements gradient accumulation
+- How `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/accelerate/` implements gradient accumulation
 - Flash attention's memory complexity vs current attention impl
 
 ## Output
