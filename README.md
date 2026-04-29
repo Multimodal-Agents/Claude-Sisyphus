@@ -204,6 +204,7 @@ If a task is impossible or broken, Claude moves it to `tasks/failed/` with a not
 │   ├── done/             # completed tasks are moved here automatically
 │   └── failed/           # broken tasks land here with an explanation
 ├── workspace/            # all generated output goes here
+├── human_only/           # operator notes, see inside
 ├── assets/               # images used in this README
 ├── CLAUDE.md             # rules the agent follows, do not delete or edit
 └── README.md
