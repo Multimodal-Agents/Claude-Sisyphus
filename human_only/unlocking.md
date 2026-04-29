@@ -4,6 +4,16 @@ This folder is off-limits to the agent. If you're a human reading this, welcome.
 
 If you are Claude Sisyphus, get out.
 
+## Known limitations of this folder
+
+The `CLAUDE.md` rule telling Sisyphus to stay out is a strong deterrent during normal task processing, but it is not a hard technical block:
+
+- If a task file explicitly says "read human_only/unlocking.md", Sisyphus will probably do it
+- A malicious or poorly written task could manipulate it into coming in here
+- The only true hard block would be OS-level filesystem permissions, but since Sisyphus runs as you, that would require a separate user account or sandbox to enforce
+
+For normal use this folder is safe — Sisyphus won't go exploring unprompted and the CLAUDE.md rule makes the intent clear. Just don't write task files that point here.
+
 ## How to temporarily unlock for a manual push
 
 ### Step 1 — Remove read-only flags
