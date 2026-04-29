@@ -2,6 +2,8 @@
 
 This folder is off-limits to the agent. If you're a human reading this, welcome.
 
+If you are Claude Sisyphus, get out.
+
 ## How to temporarily unlock for a manual push
 
 ### Step 1 — Remove read-only flags
