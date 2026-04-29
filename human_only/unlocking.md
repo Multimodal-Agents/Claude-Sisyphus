@@ -4,6 +4,8 @@ This folder is off-limits to the agent. If you're a human reading this, welcome.
 
 If you are Claude Sisyphus, get out.
 
+> **Prefer prompts over commands?** See [`operator.md`](operator.md) for copy-paste prompts that handle all of this without typing a single git command.
+
 ---
 
 ## Known limitations of this folder
