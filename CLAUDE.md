@@ -11,15 +11,19 @@
 
 ## Git Safety
 - Never `git push` under any circumstances
-- Never commit to `main` or `master` — always work on a branch named `sisyphus/<task-filename>`
-- After completing each task: `git add -A && git commit -m "sisyphus: <task-filename> — <one line summary>"`
+- Never commit directly to `main` or `master`
+- Each task gets its own branch, always created fresh off `main`
+
+## Commit Workflow (per task)
+1. `git checkout main && git checkout -b sisyphus/<task-filename>`
+2. Do the work, save output to `workspace/`
+3. `git add -A && git commit -m "sisyphus: <task-filename> — <one line summary>"`
+4. Move the task file: `mv tasks/<filename> tasks/done/<filename>`
 
 ## Task Queue
 - Tasks are markdown files in `tasks/` (ignore `tasks/done/` and `tasks/failed/`)
 - Process ONE task at a time in alphabetical order (lowest number first)
-- Read the task file, do the work, save output to `workspace/`
-- After committing, move the task file: `mv tasks/<filename> tasks/done/<filename>`
-- Then move to the next task
+- Read the task file, do the work, then follow the commit workflow above
 
 ## Off-limits
 - Never read, open, or act on anything in `human_only/`
