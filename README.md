@@ -73,8 +73,14 @@ git remote set-url --push origin no_push
 
 The repo ships with example tasks in `tasks/` (a snake game demo). Delete them before adding your own:
 
+**Mac / Linux / Git Bash:**
 ```bash
 rm tasks/*.md
+```
+
+**Windows (Command Prompt):**
+```cmd
+del tasks\*.md
 ```
 
 Or just delete them manually in your file explorer. Leave the `done/` and `failed/` subfolders in place.
@@ -245,6 +251,9 @@ See [`human_only/unlocking.md`](human_only/unlocking.md) for the full step-by-st
 
 **The hook script says "permission denied" on Mac / Linux**
 Run `chmod +x .git/hooks/pre-push` to make it executable, then try again.
+
+**The hook script won't run on Windows**
+Make sure you're using `scripts\hook.bat` (not `hook.sh`) from Command Prompt or PowerShell. Git Bash users can use `bash scripts/hook.sh` instead.
 
 **I cloned on a new machine and pushes are not blocked**
 The hook does not carry over when cloning. Run the setup steps again on the new machine.
