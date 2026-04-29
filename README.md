@@ -138,6 +138,60 @@ del .git\hooks\pre-push
 
 ---
 
+## Hardening Against a Rogue Agent
+
+The push protection hook and `CLAUDE.md` rules cover normal operation, but a sufficiently determined task could instruct Claude to disable them. Two extra steps close that gap.
+
+### 1. Lock the permission rules
+
+`CLAUDE.md` ships with a `.claude/settings.json` that uses Claude Code's built-in `permissions.deny` rules to block `git push`, hook script execution, and remote URL changes at the tool level — before any shell command runs.
+
+To prevent a task from editing that file to remove the rules, mark it read-only:
+
+**Mac / Linux:**
+```bash
+chmod 444 .claude/settings.json
+chmod 444 .git/hooks/pre-push
+```
+
+**Windows (Command Prompt or PowerShell):**
+```powershell
+attrib +R .claude\settings.json
+attrib +R .git\hooks\pre-push
+```
+
+To edit either file yourself later, remove the read-only flag first:
+
+**Mac / Linux:**
+```bash
+chmod 644 .claude/settings.json
+chmod 644 .git/hooks/pre-push
+```
+
+**Windows:**
+```powershell
+attrib -R .claude\settings.json
+attrib -R .git\hooks\pre-push
+```
+
+### 2. Disable the push remote
+
+Set the push URL on `origin` to a dead value so that even if every other layer were bypassed, there is nowhere valid to push to:
+
+```bash
+git remote set-url --push origin no_push
+```
+
+To restore it when you want to push manually:
+
+```bash
+git remote set-url --push origin https://github.com/Multimodal-Agents/Claude-Sisyphus.git
+```
+
+With all three layers in place — read-only files, dead push URL, and the pre-push hook — a task would need to defeat all of them simultaneously to get anything off your machine.
+
+---
+
 ## How Tasks Move Through the Queue
 
 ```
