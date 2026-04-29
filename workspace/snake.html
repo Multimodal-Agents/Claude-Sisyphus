@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snake</title>
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0f0f1a;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #e0e0e0;
+    user-select: none;
+  }
+
+  #title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+    color: #4ecca3;
+    text-shadow: 0 0 30px rgba(78, 204, 163, 0.35), 0 0 60px rgba(78, 204, 163, 0.1);
+    margin-bottom: 0.6rem;
+  }
+
+  #hud {
+    display: flex;
+    gap: 2.5rem;
+    font-size: 0.9rem;
+    color: #606078;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  #hud .val {
+    color: #d0d0e0;
+    font-weight: 700;
+    font-size: 1rem;
+  }
+  #hud .val.level-val {
+    color: #b388ff;
+  }
+  #hud .new-hs {
+    color: #ffd700;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    animation: pulse 0.8s ease-in-out infinite alternate;
+  }
+  @keyframes pulse { from { opacity: 0.6; } to { opacity: 1; } }
+
+  #canvas-wrap {
+    position: relative;
+    line-height: 0;
+  }
+
+  canvas {
+    border-radius: 10px;
+    border: 1.5px solid #1e1e38;
+    box-shadow:
+      0 0 0 1px #0a0a14,
+      0 8px 48px rgba(0,0,0,0.6),
+      0 0 60px rgba(78, 204, 163, 0.06);
+    display: block;
+  }
+
+  /* Overlay covers the canvas exactly */
+  #overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    background: rgba(8, 8, 18, 0.93);
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+    padding: 2.5rem 3rem;
+  }
+
+  #overlay-title {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+    color: #4ecca3;
+    margin-bottom: 1rem;
+  }
+
+  #overlay-desc {
+    font-size: 0.9rem;
+    color: #606078;
+    text-align: center;
+    line-height: 1.7;
+    margin-bottom: 1.4rem;
+  }
+
+  #overlay-scores {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 1.4rem;
+    padding: 1rem 2rem;
+    background: rgba(255,255,255,0.04);
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.07);
+    min-width: 180px;
+  }
+  .score-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 2rem;
+    width: 100%;
+  }
+  .score-label {
+    font-size: 0.78rem;
+    color: #505068;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .score-val {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #e0e0f0;
+  }
+  .score-val.gold { color: #ffd700; }
+  #new-hs-badge {
+    display: none;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #ffd700;
+    animation: pulse 0.8s ease-in-out infinite alternate;
+  }
+
+  #play-btn {
+    padding: 0.75rem 2.5rem;
+    background: #4ecca3;
+    color: #070710;
+    border: none;
+    border-radius: 7px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+    box-shadow: 0 4px 20px rgba(78, 204, 163, 0.3);
+  }
+  #play-btn:hover {
+    background: #70ddb8;
+    box-shadow: 0 6px 28px rgba(78, 204, 163, 0.45);
+    transform: translateY(-2px);
+  }
+  #play-btn:active { transform: translateY(0); box-shadow: none; }
+
+  #hint {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: #38384a;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div id="title">SNAKE</div>
+<div id="hud">
+  <span>Score <span class="val" id="score">0</span></span>
+  <span>Level <span class="val level-val" id="level">1</span></span>
+  <span>Best &nbsp;<span class="val" id="high-score">0</span><span class="new-hs" id="live-hs-badge" style="display:none"> ★ NEW</span></span>
+</div>
+
+<div id="canvas-wrap">
+  <canvas id="c" width="420" height="420"></canvas>
+
+  <div id="overlay">
+    <div id="overlay-title">SNAKE</div>
+    <div id="overlay-desc">
+      Eat the red food to grow.<br>
+      Don't hit the walls or yourself.
+    </div>
+    <div id="overlay-scores">
+      <div class="score-row">
+        <span class="score-label">Score</span>
+        <span class="score-val" id="final-score">0</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Level</span>
+        <span class="score-val" style="color:#b388ff" id="final-level">1</span>
+      </div>
+      <div class="score-row">
+        <span class="score-label">Best</span>
+        <span class="score-val gold" id="final-high">0</span>
+      </div>
+      <div id="new-hs-badge">★ New High Score!</div>
+    </div>
+    <button id="play-btn">Play</button>
+    <div id="hint">Arrow keys · WASD · Space to restart</div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const ctx    = canvas.getContext('2d');
+  const CELL   = 21;
+  const COLS   = Math.floor(canvas.width  / CELL);
+  const ROWS   = Math.floor(canvas.height / CELL);
+  const MAX_LEVEL = 10;
+  const FOOD_PER_LEVEL = 5;
+
+  let snake, dir, nextDir, food, score, highScore, running;
+  let level, foodEaten, levelFlashAt;
+  let loopId = null;
+  let lastTime = 0;
+  let accumulator = 0;
+
+  // ── Persistent high score ─────────────────────────────────────────────────
+  highScore = parseInt(localStorage.getItem('snake_hs') || '0', 10);
+  document.getElementById('high-score').textContent = highScore;
+  document.getElementById('final-high').textContent  = highScore;
+
+  // ── Init ──────────────────────────────────────────────────────────────────
+  function init() {
+    const cx = Math.floor(COLS / 2);
+    const cy = Math.floor(ROWS / 2);
+    snake   = [{ x: cx, y: cy }, { x: cx - 1, y: cy }, { x: cx - 2, y: cy }];
+    dir     = { x: 1, y: 0 };
+    nextDir = { x: 1, y: 0 };
+    score      = 0;
+    level      = 1;
+    foodEaten  = 0;
+    levelFlashAt = null;
+    updateHUD(false);
+    placeFood();
+    running = true;
+  }
+
+  function placeFood() {
+    const free = [];
+    for (let x = 0; x < COLS; x++)
+      for (let y = 0; y < ROWS; y++)
+        if (!snake.some(s => s.x === x && s.y === y)) free.push({ x, y });
+    food = free[Math.floor(Math.random() * free.length)];
+  }
+
+  function stepInterval() {
+    // Level 1 = 130ms, each level subtracts ~8ms, level 10 = ~58ms
+    return Math.max(58, 130 - (level - 1) * 8);
+  }
+
+  // ── Game step ─────────────────────────────────────────────────────────────
+  function step() {
+    dir = nextDir;
+    const head = { x: snake[0].x + dir.x, y: snake[0].y + dir.y };
+
+    if (head.x < 0 || head.x >= COLS || head.y < 0 || head.y >= ROWS) { endGame(); return; }
+    if (snake.some(s => s.x === head.x && s.y === head.y))             { endGame(); return; }
+
+    snake.unshift(head);
+
+    if (head.x === food.x && head.y === food.y) {
+      score += 10;
+      foodEaten++;
+      if (level < MAX_LEVEL && foodEaten % FOOD_PER_LEVEL === 0) {
+        level++;
+        levelFlashAt = lastTime;
+        accumulator = 0; // reset so new interval applies cleanly
+      }
+      updateHUD(score > highScore);
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('snake_hs', highScore);
+      }
+      placeFood();
+    } else {
+      snake.pop();
+    }
+  }
+
+  // ── RAF loop ──────────────────────────────────────────────────────────────
+  function loop(ts) {
+    if (!running) return;
+    loopId = requestAnimationFrame(loop);
+
+    const dt = ts - lastTime;
+    lastTime = ts;
+    accumulator += dt;
+    foodAnim = ts;
+
+    const interval = stepInterval();
+    if (accumulator >= interval) {
+      accumulator -= interval;
+      step();
+    }
+
+    draw(ts);
+  }
+
+  // ── Draw ──────────────────────────────────────────────────────────────────
+  function draw(ts) {
+    const W = canvas.width, H = canvas.height;
+
+    ctx.fillStyle = '#0c0c18';
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle grid
+    ctx.strokeStyle = 'rgba(255,255,255,0.025)';
+    ctx.lineWidth = 0.5;
+    for (let x = 0; x <= COLS; x++) {
+      ctx.beginPath(); ctx.moveTo(x * CELL, 0); ctx.lineTo(x * CELL, H); ctx.stroke();
+    }
+    for (let y = 0; y <= ROWS; y++) {
+      ctx.beginPath(); ctx.moveTo(0, y * CELL); ctx.lineTo(W, y * CELL); ctx.stroke();
+    }
+
+    // Snake
+    const len = snake.length;
+    snake.forEach((seg, i) => {
+      const t = i / len;
+      if (i === 0) {
+        ctx.fillStyle = '#4ecca3';
+        ctx.shadowColor = 'rgba(78,204,163,0.6)';
+        ctx.shadowBlur = 8;
+      } else {
+        const g = Math.round(200 - t * 120);
+        const b = Math.round(120 + t * 40);
+        ctx.fillStyle = `rgb(20, ${g}, ${b})`;
+        ctx.shadowBlur = 0;
+      }
+      ctx.beginPath();
+      ctx.roundRect(seg.x * CELL + 1.5, seg.y * CELL + 1.5, CELL - 3, CELL - 3, 4);
+      ctx.fill();
+    });
+    ctx.shadowBlur = 0;
+
+    // Food — pulsing glow
+    const pulse = 0.5 + 0.5 * Math.sin((ts || 0) / 300);
+    const r = CELL / 2 - 2 + pulse * 1.5;
+    const fx = food.x * CELL + CELL / 2;
+    const fy = food.y * CELL + CELL / 2;
+
+    ctx.shadowColor = `rgba(255, 80, 80, ${0.5 + pulse * 0.4})`;
+    ctx.shadowBlur = 12 + pulse * 8;
+    ctx.fillStyle = `rgb(255, ${80 + Math.round(pulse * 30)}, ${80 + Math.round(pulse * 20)})`;
+    ctx.beginPath();
+    ctx.arc(fx, fy, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
+    // Level-up flash: large centered text that fades over 1.2s
+    if (levelFlashAt !== null) {
+      const elapsed = ts - levelFlashAt;
+      const duration = 1200;
+      if (elapsed < duration) {
+        const progress = elapsed / duration;
+        const alpha = 1 - progress;
+        const scale = 1 + progress * 0.4;
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        ctx.scale(scale, scale);
+        ctx.font = `900 64px 'Segoe UI', system-ui, sans-serif`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(179,136,255,0.8)';
+        ctx.shadowBlur = 30;
+        ctx.fillStyle = '#b388ff';
+        ctx.fillText(`LEVEL ${level}`, 0, 0);
+        ctx.restore();
+      } else {
+        levelFlashAt = null;
+      }
+    }
+  }
+
+  // ── HUD update ────────────────────────────────────────────────────────────
+  function updateHUD(isNewHS) {
+    document.getElementById('score').textContent = score;
+    document.getElementById('level').textContent = level;
+    document.getElementById('high-score').textContent = Math.max(highScore, score);
+    const badge = document.getElementById('live-hs-badge');
+    badge.style.display = isNewHS ? 'inline' : 'none';
+  }
+
+  // ── Game over ─────────────────────────────────────────────────────────────
+  function endGame() {
+    running = false;
+    cancelAnimationFrame(loopId);
+    loopId = null;
+
+    const isNewHS = score >= highScore && score > 0;
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem('snake_hs', highScore);
+    }
+
+    document.getElementById('overlay-title').textContent = 'GAME OVER';
+    document.getElementById('overlay-desc').textContent  = '';
+
+    document.getElementById('final-score').textContent = score;
+    document.getElementById('final-level').textContent = level;
+    document.getElementById('final-high').textContent  = highScore;
+    document.getElementById('overlay-scores').style.display = 'flex';
+    document.getElementById('new-hs-badge').style.display = isNewHS ? 'block' : 'none';
+
+    document.getElementById('play-btn').textContent = 'Play Again';
+    document.getElementById('overlay').style.display = 'flex';
+  }
+
+  // ── Start / restart ───────────────────────────────────────────────────────
+  function startGame() {
+    if (loopId) { cancelAnimationFrame(loopId); loopId = null; }
+
+    document.getElementById('overlay-title').textContent = 'SNAKE';
+    document.getElementById('overlay-desc').innerHTML =
+      'Eat the red food to grow.<br>Don\'t hit the walls or yourself.';
+    document.getElementById('overlay-scores').style.display = 'none';
+    document.getElementById('live-hs-badge').style.display  = 'none';
+    document.getElementById('play-btn').textContent = 'Play';
+    document.getElementById('overlay').style.display = 'none';
+
+    init();
+    lastTime = performance.now();
+    accumulator = 0;
+    loopId = requestAnimationFrame(loop);
+  }
+
+  document.getElementById('play-btn').addEventListener('click', startGame);
+
+  // ── Input ─────────────────────────────────────────────────────────────────
+  const KEY_DIR = {
+    ArrowUp:    { x: 0, y: -1 }, KeyW: { x: 0, y: -1 },
+    ArrowDown:  { x: 0, y:  1 }, KeyS: { x: 0, y:  1 },
+    ArrowLeft:  { x: -1, y: 0 }, KeyA: { x: -1, y: 0 },
+    ArrowRight: { x: 1,  y: 0 }, KeyD: { x: 1,  y: 0 },
+  };
+
+  document.addEventListener('keydown', e => {
+    // Space / Enter to (re)start
+    if (e.code === 'Space' || e.code === 'Enter') {
+      e.preventDefault();
+      if (!running) { startGame(); return; }
+    }
+
+    const d = KEY_DIR[e.code];
+    if (!d) return;
+    if (e.code.startsWith('Arrow')) e.preventDefault();
+    if (!running) return;
+
+    // Prevent reversing: check against nextDir so rapid inputs can't slip through
+    if (d.x === -nextDir.x && d.y === -nextDir.y) return;
+    nextDir = d;
+  });
+
+  // ── Initial idle draw ─────────────────────────────────────────────────────
+  ctx.fillStyle = '#0c0c18';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+})();
+</script>
+</body>
+</html>
