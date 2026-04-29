@@ -14,6 +14,7 @@
 
 ## Off-limits
 - Never read, open, or act on anything in `human_only/`
+- Never modify, delete, or change permissions on anything in `.claude/`
 
 ## Rules
 - Never edit files in `tasks/` (except to move them to done/)

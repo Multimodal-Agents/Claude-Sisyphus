@@ -60,10 +60,16 @@ attrib -R .git\hooks\pre-push
 
 ### Step 2 — Restore the push remote
 
-Replace the URL with your actual repo:
+Replace the URL with your actual repo. Not sure which format you're using? Run `git remote -v` — the fetch URL still shows the real address even when push is set to `no_push`.
 
+**HTTPS:**
 ```bash
 git remote set-url --push origin https://github.com/YOUR-ORG/YOUR-REPO.git
+```
+
+**SSH:**
+```bash
+git remote set-url --push origin git@github.com:YOUR-ORG/YOUR-REPO.git
 ```
 
 ### Step 3 — Disable the hook

@@ -9,7 +9,10 @@
       "Bash(wget * github*)",
       "Bash(* .git/hooks*)",
       "Bash(scripts/hook*)",
-      "Bash(scripts\\hook*)"
+      "Bash(scripts\\hook*)",
+      "Bash(attrib -R*)",
+      "Bash(icacls*)",
+      "Bash(chmod * .claude*)"
     ]
   }
 }

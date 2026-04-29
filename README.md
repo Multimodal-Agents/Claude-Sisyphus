@@ -69,7 +69,17 @@ git remote set-url --push origin no_push
 
 > If you ever need to push manually, see [`human_only/unlocking.md`](human_only/unlocking.md) for the full unlock walkthrough.
 
-### Step 4 — Write your tasks
+### Step 4 — Clear the example tasks
+
+The repo ships with example tasks in `tasks/` (a snake game demo). Delete them before adding your own:
+
+```bash
+rm tasks/*.md
+```
+
+Or just delete them manually in your file explorer. Leave the `done/` and `failed/` subfolders in place.
+
+### Step 5 — Write your tasks
 
 Tasks are plain markdown files in the `tasks/` folder. Name them with a number prefix so Claude processes them in the right order.
 
@@ -97,7 +107,7 @@ Requirements:
 
 All output files go to `workspace/` automatically.
 
-### Step 5 — Open Claude Code in this folder
+### Step 6 — Open Claude Code in this folder
 
 Launch Claude Code (CLI, desktop app, or IDE extension) with the `Claude-Sisyphus` folder as your working directory.
 
@@ -107,7 +117,12 @@ Launch Claude Code (CLI, desktop app, or IDE extension) with the `Claude-Sisyphu
 
 ### Step 1 — Turn on Bypass Permissions
 
-At the bottom of the Claude Code window, enable **Bypass permissions**.
+Enable **Bypass permissions** in Claude Code before starting the loop.
+
+Where to find it:
+- **CLI:** press `Shift+Tab` to cycle through permission modes until you see `bypass` in the status line
+- **Desktop app:** click the permission mode indicator at the bottom of the window
+- **IDE extension (VS Code / JetBrains):** click the permission mode in the Claude Code sidebar
 
 > **What this does:** Normally Claude asks for your approval before running shell commands, writing files, or committing to git. Bypass permissions lets it do all of that automatically so it can work through the queue without stopping every few seconds to ask. You can turn it off again after the run.
 >
@@ -120,6 +135,8 @@ Type this in the Claude Code input and press Enter:
 ```
 /loop Process the task queue
 ```
+
+> **What `/loop` is:** A built-in Claude Code slash command that runs a prompt on repeat, resuming automatically after each context compaction. It keeps Sisyphus running until the queue is empty without any input from you.
 
 Claude will read the first task, do the work, save output to `workspace/`, commit, move the task to `tasks/done/`, and repeat until the queue is empty. You can watch it run or walk away.
 
