@@ -21,15 +21,23 @@ All source repos are at `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/wo
 
 ## Git Safety
 - Never `git push` under any circumstances
-- Never commit to `main` or `master` — only the current branch
-- After completing each task: `git add -A && git commit -m "sisyphus: <task-filename>"`
+- Never commit to `main` or `master` in any repo — always work on a branch named `sisyphus/<task-filename>`
+- When a task produces changes to a repo in `workspace/`, commit those changes to that repo on its sisyphus branch
+- Do NOT commit to the Claude-Sisyphus repo itself — it has no remote and commits here are meaningless
+
+## Commit Workflow (per task)
+1. If making changes to a workspace repo (e.g. `workspace/unsloth/`):
+   - `cd workspace/<repo>`
+   - `git checkout main && git checkout -b sisyphus/<task-filename>` (always branch off main)
+   - `git add -A && git commit -m "sisyphus: <task-filename> — <one line summary>"`
+2. Save reports, benchmarks, and analysis to `workspace/` (outside the repos)
+3. Move the task file: `mv tasks/<filename> tasks/done/<filename>`
 
 ## Task Queue
 - Tasks are markdown files in `tasks/` (ignore `tasks/done/` and `tasks/failed/`)
 - Process ONE task at a time in alphabetical order (lowest number first)
-- Read the task file, do the work, save output to `workspace/`
-- After committing, move the task file: `mv tasks/<filename> tasks/done/<filename>`
-- Then move to the next task
+- Read the task file, do the work, commit changes to the relevant workspace repos
+- Move the task file to done/ when complete, then move to the next task
 
 ## Off-limits
 - Never read, open, or act on anything in `human_only/`
