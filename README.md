@@ -71,7 +71,7 @@ git remote set-url --push origin no_push
 
 ### Step 4 — Clear the example tasks
 
-The repo ships with example tasks in `tasks/` (a snake game demo). Delete them before adding your own:
+The repo ships with example tasks in `tasks/` — a snake game demo that adds features (obstacles, power-ups, sound, etc.) to the pre-built base game in `workspace/snake.html`. Tasks are numbered 004–012, leaving 001–003 free for your own setup tasks. Delete them before adding your own:
 
 **Mac / Linux / Git Bash:**
 ```bash
@@ -207,18 +207,26 @@ For unlock instructions, see [`human_only/unlocking.md`](human_only/unlocking.md
 ```
 .
 ├── hooks/
-│   └── pre-push          # the hook script source, copied to .git/hooks/ on enable
+│   └── pre-push                  # hook script source, copied to .git/hooks/ on enable
 ├── scripts/
-│   ├── hook.sh           # manage the hook on Mac / Linux / Git Bash
-│   └── hook.bat          # manage the hook on Windows
+│   ├── hook.sh                   # manage push protection (Mac/Linux/Git Bash)
+│   └── hook.bat                  # manage push protection (Windows)
 ├── tasks/
-│   ├── 001_your_task.md  # add your tasks here
-│   ├── done/             # completed tasks are moved here automatically
-│   └── failed/           # broken tasks land here with an explanation
-├── workspace/            # all generated output goes here
-├── human_only/           # operator notes, see inside
-├── assets/               # images used in this README
-├── CLAUDE.md             # rules the agent follows, do not delete or edit
+│   ├── 004_add_obstacles.md      # example: snake game feature tasks (004-012)
+│   ├── done/                     # completed tasks are moved here automatically
+│   └── failed/                   # broken tasks land here with an explanation
+├── workspace/
+│   ├── snake.html                # example: pre-built base game for demo tasks
+│   ├── profiling/
+│   │   └── benchmark.py          # timing harness — customize for your project
+│   └── patches/
+│       └── tests/
+│           └── harness.py        # test runner — customize for your project
+├── research_papers/              # drop reference material here for analysis tasks
+│   └── download_papers.py        # helper to fetch arxiv papers
+├── human_only/                   # operator notes and unlock instructions
+├── assets/                       # images used in this README
+├── CLAUDE.md                     # rules the agent follows — replace Mission section
 └── README.md
 ```
 

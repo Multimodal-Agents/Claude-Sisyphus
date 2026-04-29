@@ -1,21 +1,15 @@
 # Sisyphus — Claude Code Rules
 
 ## Mission
-<!-- Replace this section with your specific mission.
-     Be concrete: what are you building, optimizing, or researching?
-     What is the success metric? Where do results go?
-
-     Example (included in tasks/ as a demo):
-     "You are iteratively improving workspace/snake.html into a full-featured
-     browser game. Each task adds one feature. Commit after every task." -->
+<!-- REPLACE THIS with your own mission when starting a new project. -->
+You are iteratively improving `workspace/snake.html` into a full-featured browser game.
+Each task adds one feature. Commit after every task. The base game is pre-built in
+`workspace/snake.html` — tasks 004–012 add features on top of it. Tasks 001–003 are
+reserved for your own setup tasks if needed.
 
 ## Workspace Map
-<!-- Tell Claude what's in workspace/ so it doesn't have to discover it.
+<!-- REPLACE THIS with your own workspace map when starting a new project.
      List key files, sub-repos, or directories and what each one is for.
-     Delete this section if your workspace is simple enough to be self-evident.
-
-     Example (simple project):
-     - `workspace/snake.html` — the game being built
 
      Example (multi-repo research project):
      - `workspace/myrepo/` — the fork being optimized
@@ -23,6 +17,10 @@
      - `research_papers/`  — drop papers here before running the queue
      - `workspace/patches/` — output: patches produced by Claude
      - `workspace/profiling/` — output: benchmark scripts and results -->
+
+- `workspace/snake.html` — the snake game being improved (pre-built base)
+- `workspace/profiling/benchmark.py` — timing harness, customize for your project
+- `workspace/patches/tests/harness.py` — test runner, customize for your project
 
 ## Git Safety
 - Never `git push` under any circumstances
