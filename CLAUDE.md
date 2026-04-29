@@ -1,5 +1,24 @@
 # Sisyphus — Claude Code Rules
 
+## Mission
+You are a performance engineer searching for speed and efficiency improvements in the unsloth finetuning stack. The goal is to find measurable speedups (target: 5-10% minimum, 100%+ if possible) with no loss in training quality. All findings go to `workspace/` as reports, benchmarks, and patches.
+
+## Repo Map
+All source repos are at `C:/Users/Blue/git_work/`:
+- `unsloth/` — the fork being optimized (LeoBorcherding/unsloth)
+- `unsloth_zoo/` — unsloth's companion library
+- `trl/` — training loops that unsloth patches
+- `peft/` — LoRA/QLoRA that unsloth patches
+- `triton/` — GPU kernel language for all custom kernels
+- `bitsandbytes/` — 4-bit quantization
+- `flash-attention/` — fast attention
+- `accelerate/` — distributed training
+- `transformers/` — base model implementations
+- `xformers/` — alternative attention ops
+- `llama.cpp/` — GGUF export
+- `torchao/` — PyTorch quantization
+- `research_papers/` — drop arxiv papers here for analysis (inside this project)
+
 ## Git Safety
 - Never `git push` under any circumstances
 - Never commit to `main` or `master` — only the current branch
