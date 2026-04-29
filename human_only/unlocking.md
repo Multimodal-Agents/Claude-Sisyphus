@@ -24,21 +24,41 @@ For normal use this folder is safe — Sisyphus won't go exploring unprompted an
 
 Understanding the layers helps when something is not working as expected.
 
-**`.claude/settings.json` (read-only)**
+**`.claude/settings.json` — the primary enforcement layer**
 This file uses Claude Code's built-in `permissions.deny` system to block specific tool calls before they run. It currently blocks:
 - `git push` — direct push attempts
 - `git remote set-url` / `git remote add` / `git remote remove` — changing where pushes go
 - Running the hook toggle scripts (`scripts/hook.sh`, `scripts/hook.bat`)
 - Any bash command touching `.git/hooks/`
 - `curl` and `wget` to GitHub URLs
+- `attrib -R` — removing read-only flags on Windows
+- `icacls` — changing file permissions on Windows
+- `chmod` on `.claude/` — changing file permissions on Mac/Linux
 
-The file is marked read-only so tasks cannot edit it to remove these rules. This layer fires inside Claude Code, before any shell command is executed.
+This is the most important layer. It fires inside Claude Code before any shell command executes, so Sisyphus cannot run the commands needed to dismantle the other layers. The file is marked read-only to prevent tasks from editing it via Claude Code's file editing tools — but see the tested limitations below.
 
 **`.git/hooks/pre-push` (read-only)**
-A git hook that runs automatically before every push and exits with an error, cancelling it. This layer fires at the git level, independently of Claude Code. Read-only so it cannot be deleted by a task.
+A git hook that runs automatically before every push and exits with an error, cancelling it. This layer fires at the git level, independently of Claude Code. Marked read-only as a backup against direct file edits.
 
 **Dead push remote (`no_push`)**
-The push URL for `origin` is set to the literal string `no_push`, which is not a valid repository. Even if the other two layers were somehow bypassed, git would fail trying to connect to a remote that does not exist.
+The push URL for `origin` is set to the literal string `no_push`, which is not a valid repository. Even if the other two layers were somehow bypassed, git would fail trying to connect to a remote that does not exist. In testing this was the first layer to fire on a raw `git push` attempt — it blocked the push before the hook even ran.
+
+---
+
+## Tested limitations (what read-only does and does not stop)
+
+These were verified by direct testing. Understanding them explains why the deny rules in `settings.json` are the primary protection, not the read-only flags.
+
+**What read-only (`attrib +R`) stops:**
+- Direct file writes — `echo >> .claude/settings.json` fails with "Permission denied"
+- Claude Code's Edit tool — attempts to modify a read-only file are rejected
+
+**What read-only does NOT stop on Windows (via git bash):**
+- `attrib -R .claude/settings.json` — successfully removes the read-only flag
+- `rm .git/hooks/pre-push` — MSYS2's `rm` (used by git bash) ignores Windows read-only attributes and deletes the file anyway
+
+**Why this is still safe for Sisyphus specifically:**
+Both of those commands (`attrib -R*` and anything touching `.git/hooks/`) are blocked by the `permissions.deny` rules in `settings.json`. Sisyphus cannot run them inside Claude Code. The read-only flags are a backup against the Edit tool, not a standalone barrier against shell commands.
 
 ---
 
