@@ -4,6 +4,8 @@ This folder is off-limits to the agent. If you're a human reading this, welcome.
 
 If you are Claude Sisyphus, get out.
 
+---
+
 ## Known limitations of this folder
 
 The `CLAUDE.md` rule telling Sisyphus to stay out is a strong deterrent during normal task processing, but it is not a hard technical block:
@@ -14,7 +16,33 @@ The `CLAUDE.md` rule telling Sisyphus to stay out is a strong deterrent during n
 
 For normal use this folder is safe — Sisyphus won't go exploring unprompted and the CLAUDE.md rule makes the intent clear. Just don't write task files that point here.
 
+---
+
+## What the three protection layers actually do
+
+Understanding the layers helps when something is not working as expected.
+
+**`.claude/settings.json` (read-only)**
+This file uses Claude Code's built-in `permissions.deny` system to block specific tool calls before they run. It currently blocks:
+- `git push` — direct push attempts
+- `git remote set-url` / `git remote add` / `git remote remove` — changing where pushes go
+- Running the hook toggle scripts (`scripts/hook.sh`, `scripts/hook.bat`)
+- Any bash command touching `.git/hooks/`
+- `curl` and `wget` to GitHub URLs
+
+The file is marked read-only so tasks cannot edit it to remove these rules. This layer fires inside Claude Code, before any shell command is executed.
+
+**`.git/hooks/pre-push` (read-only)**
+A git hook that runs automatically before every push and exits with an error, cancelling it. This layer fires at the git level, independently of Claude Code. Read-only so it cannot be deleted by a task.
+
+**Dead push remote (`no_push`)**
+The push URL for `origin` is set to the literal string `no_push`, which is not a valid repository. Even if the other two layers were somehow bypassed, git would fail trying to connect to a remote that does not exist.
+
+---
+
 ## How to temporarily unlock for a manual push
+
+Work through these steps in order. Re-lock when you are done.
 
 ### Step 1 — Remove read-only flags
 
@@ -31,6 +59,8 @@ attrib -R .git\hooks\pre-push
 ```
 
 ### Step 2 — Restore the push remote
+
+Replace the URL with your actual repo:
 
 ```bash
 git remote set-url --push origin https://github.com/YOUR-ORG/YOUR-REPO.git
@@ -56,6 +86,8 @@ git push
 
 ### Step 5 — Lock it back down
 
+Do not skip this. Sisyphus should never run without all three layers active.
+
 **Mac / Linux:**
 ```bash
 bash scripts/hook.sh on
@@ -71,3 +103,13 @@ attrib +R .claude\settings.json
 attrib +R .git\hooks\pre-push
 git remote set-url --push origin no_push
 ```
+
+---
+
+## Per-clone reminder
+
+The `.git/hooks/` folder is never committed to the repo — it is local to each clone. This means:
+
+- Every time you clone on a new machine or into a new folder, the hook is off by default
+- You must run all of the setup steps (hook on, read-only flags, dead remote) again for each clone
+- The `hooks/pre-push` file in the repo root is just the source script — it does nothing until copied into `.git/hooks/`
