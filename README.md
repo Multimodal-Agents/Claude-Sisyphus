@@ -160,19 +160,7 @@ attrib +R .claude\settings.json
 attrib +R .git\hooks\pre-push
 ```
 
-To edit either file yourself later, remove the read-only flag first:
-
-**Mac / Linux:**
-```bash
-chmod 644 .claude/settings.json
-chmod 644 .git/hooks/pre-push
-```
-
-**Windows:**
-```powershell
-attrib -R .claude\settings.json
-attrib -R .git\hooks\pre-push
-```
+When you need to push manually, full unlock instructions are in [`human_only/unlocking.md`](human_only/unlocking.md).
 
 ### 2. Disable the push remote
 
@@ -180,12 +168,6 @@ Set the push URL on `origin` to a dead value so that even if every other layer w
 
 ```bash
 git remote set-url --push origin no_push
-```
-
-To restore it when you want to push manually:
-
-```bash
-git remote set-url --push origin https://github.com/Multimodal-Agents/Claude-Sisyphus.git
 ```
 
 With all three layers in place — read-only files, dead push URL, and the pre-push hook — a task would need to defeat all of them simultaneously to get anything off your machine.

@@ -12,6 +12,9 @@
 - After committing, move the task file: `mv tasks/<filename> tasks/done/<filename>`
 - Then move to the next task
 
+## Off-limits
+- Never read, open, or act on anything in `human_only/`
+
 ## Rules
 - Never edit files in `tasks/` (except to move them to done/)
 - Save all generated files to `workspace/`
