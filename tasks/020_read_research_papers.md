@@ -1,7 +1,7 @@
 # Task: Extract Optimization Techniques from Research Papers
 
 ## Goal
-Read every paper in `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/workspace/Claude-Sisyphus/research_papers/` and extract techniques directly applicable to improving unsloth's speed, memory efficiency, or output quality.
+Read every paper in `C:/Users/Blue/git_work/sisyphus_main/Claude-Sisyphus/research_papers/` and extract techniques directly applicable to improving unsloth's speed, memory efficiency, or output quality.
 
 ## How to process each paper
 For each file in research_papers/ (skip README.md):
